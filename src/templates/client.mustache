@@ -49,15 +49,10 @@ export class Api{{apiConfig.generic}} {
   }
 
   {{#hasQueryRoutes}}
-  private addQueryParams(query: object): string {
+  private addQueryParams(query: {[key:string]:string|number|boolean}): string {
     const keys = Object.keys(query);
-    return keys.length ? (
-      '?' +
-      keys.reduce((paramsArray, param) => [
-        ...paramsArray,
-        param + '=' + encodeURIComponent(query[param])
-      ], []).join('&')
-    ) : ''
+    return keys.length === 0 ? ''
+      : '?' + keys.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&')
   }
   {{/hasQueryRoutes}}
 
